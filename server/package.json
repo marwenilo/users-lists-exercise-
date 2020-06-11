@@ -17,6 +17,8 @@
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.9",
-    "request": "^2.88.2"
+    "mysql2": "^2.1.0",
+    "request": "^2.88.2",
+    "sequelize": "^5.21.12"
   }
 }
