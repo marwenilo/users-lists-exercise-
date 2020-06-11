@@ -10,6 +10,7 @@ const config = require("config");
 
 // *************
 //Login User
+//////////////////////***********done */
 userLogin = async (req, res) => {
   // *********update the login date
   const { name, family_name, password } = req.body;
@@ -39,7 +40,7 @@ userLogin = async (req, res) => {
 
     const userData = {
       ...user,
-      token: `Bearer ${token}`,
+      token,
     };
     return res.status(200).json({
       ...userData,
@@ -106,6 +107,7 @@ getUsers = async (req, res) => {
 };
 // *************
 //Update User By Id
+//////////////////////***********done */
 updateUser = async (req, res) => {
  
   try {

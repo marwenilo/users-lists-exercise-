@@ -16,9 +16,9 @@ const {
 router.post("/login", userLogin);
 
 // Create a new Customer
-// access  Public
+// access  Privet
 router.post(
-  "/add-user",
+  "/add-user",auth,
   // [
   //   check("name", "Name is required").not().isEmpty(),
   //   check("family_name", "family Name is required").not().isEmpty(),
@@ -34,14 +34,14 @@ router.post(
 
 // Get all Users
 // access  Privet
-router.get("/users", getUsers);
+router.get("/users",auth, getUsers);
 
 // Update User By Id
 // access  Privet
-router.put("/update/:id", updateUser);
+router.put("/update/:id",auth, updateUser);
 
 //Delete User By Id
 // access  Privet
-router.delete("/delete/:id", deleteUser);
+router.delete("/delete/:id",auth, deleteUser);
 
 module.exports = router;
