@@ -7,7 +7,7 @@ const {
   createUser,
   getUsers,
   updateUser,
-  deleteUser,
+  deleteUser
 } = require("../../controller/users.controller");
 
 
@@ -34,14 +34,14 @@ router.post(
 
 // Get all Users
 // access  Privet
-app.get("/users", auth, getUsers);
+router.get("/users", getUsers);
 
 // Update User By Id
 // access  Privet
-app.put("/:id", auth, updateUser);
+router.put("/update/:id", auth, updateUser);
 
 //Delete User By Id
 // access  Privet
-app.delete("/:id", auth, deleteUser);
+router.delete("/delete/:id", deleteUser);
 
 module.exports = router;

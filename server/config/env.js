@@ -1,7 +1,7 @@
 const env = {
     database: 'userslist',
-    username: 'admin',
-    password: 'admin',
+    username: 'root',
+    password: '',
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -11,5 +11,6 @@ const env = {
         idle: 10000
     }
   };
+
   
   module.exports = env;

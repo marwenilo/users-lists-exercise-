@@ -5,8 +5,8 @@ const app = express();
 
   // connect DB
 // force: true will drop the table if it already exists
-connectDB.sequelize.sync({force: true}).then(() => {
-  console.log('Drop and Resync with { force: true }');
+connectDB.sequelize.sync({force: false}).then(() => {
+  console.log('Will not drop and Resync with { force: false }');
 });
 
 //Init Middleware
