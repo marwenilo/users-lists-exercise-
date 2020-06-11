@@ -107,15 +107,13 @@ getUsers = async (req, res) => {
 // *************
 //Update User By Id
 updateUser = async (req, res) => {
-  const id = req.params.id;
+ 
   try {
-    const filter = { id };
-    const update = req.body;
-
+    const user = await User.findByPk(req.params.id)
+console.log(user)
     //Update
-    const user = await Merch.findOneAndUpdate(filter, update, {
-      new: true,
-    });
+    const userUpdate = await user.update(req.body);
+    console.log(userUpdate)
 
     return res.json(user);
   } catch (err) {

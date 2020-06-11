@@ -38,7 +38,7 @@ router.get("/users", getUsers);
 
 // Update User By Id
 // access  Privet
-router.put("/update/:id", auth, updateUser);
+router.put("/update/:id", updateUser);
 
 //Delete User By Id
 // access  Privet
