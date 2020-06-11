@@ -21,19 +21,18 @@ userLogin = async (req, res) => {
   if (!isMatch) {
     // sign in the token
     const user = {
-      id,
       name,
       family_name,
-      //   last_login_date,
-      created_at,
-      update_at,
+     
     };
     const token = jwt.sign({
-      id,
       name,
       family_name,
-      last_login_date,
-    });
+    },
+    config.get("jwtSecret"),
+    { expiresIn: 3600000 },
+  );
+
     const userData = {
       ...user,
       token: `Bearer ${token}`,
@@ -52,8 +51,16 @@ userLogin = async (req, res) => {
 // *************
 // create new user controler
 //from add new user
+//////////////////////***********done */
 createUser = async (req, res) => {
   console.log(req.body, "backend usercreate");
+  // const user = await User.findOne({ family_name });
+  // console.log(user.dataValues.password,"login user")
+  // if (!user.dataValues) {
+  //   return res.status(404).json({
+  //     msg: `User is not found `,
+  //   });
+  // }
   const { name, family_name, password } = req.body;
   try {
     // Save to MySQL database
@@ -79,6 +86,7 @@ console.log(user,"create user")
 // *************
 //Get All Users
 //after login
+//////////////////////***********done */
 getUsers = async (req, res) => {
   console.log(res.json, "res")
   try {
@@ -114,6 +122,7 @@ updateUser = async (req, res) => {
 
 // *************
 //Delete User By Id
+//////////////////////***********done */
 deleteUser = async (req, res) => {
  
   try {
