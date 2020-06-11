@@ -42,7 +42,7 @@ router.post(
     try {
       // if the user exists****
 
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ name });
 
       if (!user) {
         return res.status(400).json({

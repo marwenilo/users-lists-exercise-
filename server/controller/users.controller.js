@@ -1,5 +1,5 @@
 const db = require("../config/db.config.js");
-const User = db.user;
+const User = db.users;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
@@ -9,14 +9,16 @@ const config = require("config");
 userLogin = async (req, res) => {
   // *********update the login date
   const { name, family_name, password } = req.body;
-  const user = await User.findOne({ name, family_name });
-  if (!user) {
+  const user = await User.findOne({ family_name });
+  console.log(user.dataValues.password,"login user")
+  if (!user.dataValues) {
     return res.status(404).json({
-      msg: `Username is not found `,
+      msg: `User is not found `,
     });
   }
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (isMatch) {
+  const isMatch = await bcrypt.compare(password, user.dataValues.password);
+  console.log(password ,"login match password")
+  if (!isMatch) {
     // sign in the token
     const user = {
       id,
@@ -52,30 +54,22 @@ userLogin = async (req, res) => {
 //from add new user
 createUser = async (req, res) => {
   console.log(req.body, "backend usercreate");
-  const { name, family_name, password, created_at } = req.body;
+  const { name, family_name, password } = req.body;
   try {
     // Save to MySQL database
     user = new User({
       name,
       family_name,
       password,
-      created_at,
+     
     });
     //Crypt password
-    const salt = await bcrypt.genSalt(10);
+   const salt = await bcrypt.genSalt(10);
     // remember to check the kind of the id after the salt so i can user the right type between the front and the db
     user.password = await bcrypt.hash(password, salt);
     await user.save();
-
-    //Create Token
-    jwt.sign(
-      payload,
-      config.get("jwtSecret"),
-      { expiresIn: 36000000000000 },
-      (err, token) => {
-        res.json({ token });
-      }
-    );
+console.log(user,"create user")
+   res.json(user)
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -86,9 +80,13 @@ createUser = async (req, res) => {
 //Get All Users
 //after login
 getUsers = async (req, res) => {
+  console.log(res.json, "res")
   try {
-    const users = await User.find();
-    res.json(users);
+    const users = await User.findAll();
+  console.log(users)
+        res.json(users);
+    
+   
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -117,9 +115,12 @@ updateUser = async (req, res) => {
 // *************
 //Delete User By Id
 deleteUser = async (req, res) => {
+ 
   try {
-    const user = await User.findById(req.params.id);
-    await user.remove();
+    
+    const user = await User.findByPk(req.params.id)
+    console.log(user,"delete user")
+    await user.destroy();
 
     res.json({ msg: "User removed" });
   } catch (err) {
@@ -133,4 +134,10 @@ deleteUser = async (req, res) => {
   }
 };
 
-module.exports = controller;
+module.exports = {
+    userLogin,
+    createUser,
+    getUsers,
+    updateUser,
+    deleteUser
+};
