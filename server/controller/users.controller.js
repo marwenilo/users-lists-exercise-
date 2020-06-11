@@ -1,38 +1,37 @@
 const db = require("../config/db.config.js");
-const User = db.users;
+const User = db.user;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
 // *************
 //Login User
-userLogin = async (req, res) => {
+userLogin = async (req, res) => { 
   // *********update the login date
   const { name, family_name, password } = req.body;
-  const user = await User.findOne({ family_name });
-  console.log(user.dataValues.password,"login user")
-  if (!user.dataValues) {
+  const user = await User.findOne({ name, family_name });
+  if (!user) {
     return res.status(404).json({
-      msg: `User is not found `,
+      msg: `Username is not found `,
     });
   }
-  const isMatch = await bcrypt.compare(password, user.dataValues.password);
-  console.log(password ,"login match password")
-  if (!isMatch) {
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (isMatch) {
     // sign in the token
     const user = {
+      id,
       name,
       family_name,
-     
+      //   last_login_date,
+      created_at,
+      update_at,
     };
     const token = jwt.sign({
+      id,
       name,
       family_name,
-    },
-    config.get("jwtSecret"),
-    { expiresIn: 3600000 },
-  );
-
+      last_login_date,
+    });
     const userData = {
       ...user,
       token: `Bearer ${token}`,
@@ -51,32 +50,32 @@ userLogin = async (req, res) => {
 // *************
 // create new user controler
 //from add new user
-//////////////////////***********done */
 createUser = async (req, res) => {
   console.log(req.body, "backend usercreate");
-  // const user = await User.findOne({ family_name });
-  // console.log(user.dataValues.password,"login user")
-  // if (!user.dataValues) {
-  //   return res.status(404).json({
-  //     msg: `User is not found `,
-  //   });
-  // }
-  const { name, family_name, password } = req.body;
+  const { name, family_name, password, created_at } = req.body;
   try {
     // Save to MySQL database
     user = new User({
       name,
       family_name,
       password,
-     
+      created_at,
     });
     //Crypt password
-   const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10);
     // remember to check the kind of the id after the salt so i can user the right type between the front and the db
     user.password = await bcrypt.hash(password, salt);
     await user.save();
-console.log(user,"create user")
-   res.json(user)
+
+    //Create Token
+    jwt.sign(
+      payload,
+      config.get("jwtSecret"),
+      { expiresIn: 36000000000000 },
+      (err, token) => {
+        res.json({ token });
+      }
+    );
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -86,15 +85,10 @@ console.log(user,"create user")
 // *************
 //Get All Users
 //after login
-//////////////////////***********done */
 getUsers = async (req, res) => {
-  console.log(res.json, "res")
   try {
-    const users = await User.findAll();
-  console.log(users)
-        res.json(users);
-    
-   
+    const users = await User.find();
+    res.json(users);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -122,14 +116,10 @@ updateUser = async (req, res) => {
 
 // *************
 //Delete User By Id
-//////////////////////***********done */
 deleteUser = async (req, res) => {
- 
   try {
-    
-    const user = await User.findByPk(req.params.id)
-    console.log(user,"delete user")
-    await user.destroy();
+    const user = await User.findById(req.params.id);
+    await user.remove();
 
     res.json({ msg: "User removed" });
   } catch (err) {
@@ -143,10 +133,4 @@ deleteUser = async (req, res) => {
   }
 };
 
-module.exports = {
-    userLogin,
-    createUser,
-    getUsers,
-    updateUser,
-    deleteUser
-};
+module.exports = controller;
