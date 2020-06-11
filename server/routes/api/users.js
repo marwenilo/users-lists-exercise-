@@ -1,92 +1,41 @@
 const express = require("express");
 const router = express.Router();
-const gravatar = require("gravatar");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const config = require("config");
+const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
-const User = require("../../models/User");
-//@route   POST api/users
-//@desc    Register user
-//@access  Public
+const {
+  createUser,
+  getUsers,
+  updateUser,
+  deleteUser,
+} = require("../../controller/users.controller");
+
+// Create a new Customer
+// access  Public
 router.post(
-  "/",
-  [
-    check("firstName", "firstName is required").not().isEmpty(),
-    check("lastName", "lastName is required").not().isEmpty(),
-    check("email", "Please include a valid email").isEmail(),
-    check(
-      "password",
-      "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 }),
-  ],
+  "/add-user",
+  // [
+  //   check("name", "Name is required").not().isEmpty(),
+  //   check("family_name", "family Name is required").not().isEmpty(),
+  //   check(
+  //     "password",
+  //     "Please enter a password with 6 or more characters"
+  //   ).isLength({ min: 6 }),
+  // ],
   async (req, res) => {
-    console.log(req.body);
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { firstName, lastName, email, password } = req.body;
-    try {
-      // if the user exists****
-
-      let user = await User.findOne({ email });
-
-      if (user) {
-        return res.status(400).json({
-          errors: [
-            {
-              msg: "User already exists",
-            },
-          ],
-        });
-      }
-      //get user gavatar****
-
-      const avatar = gravatar.url(email, {
-        s: "200",
-        // s mean size
-        r: "pg",
-        // r mean rating
-        d: "mm",
-        //d mean deafult and mm gives u a default img if user img not exist
-      });
-
-      user = new User({
-        firstName,
-        lastName,
-        email,
-        avatar,
-        password,
-      });
-      //encrypt password****
-
-      const salt = await bcrypt.genSalt(10);
-
-      user.password = await bcrypt.hash(password, salt);
-      await user.save();
-
-      //return jsonweb token to login rightaway after they reg to the site****
-      const payload = {
-        user: {
-          id: user.id,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: 36000000000000 },
-        (err, token) => {
-          res.json({ token });
-        }
-      );
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server error");
-    }
+    await createUser;
   }
 );
+
+// Get all Users
+// access  Privet
+app.get("/users", auth, getUsers);
+
+// Update User By Id
+// access  Privet
+app.put("/:id", auth, updateUser);
+
+//Delete User By Id
+// access  Privet
+app.delete("/:id", auth, deleteUser);
 
 module.exports = router;
