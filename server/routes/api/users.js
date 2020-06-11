@@ -3,11 +3,17 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 const {
+  userLogin,
   createUser,
   getUsers,
   updateUser,
   deleteUser,
 } = require("../../controller/users.controller");
+
+
+//Login User
+// access  Public
+router.post("/login", userLogin);
 
 // Create a new Customer
 // access  Public
@@ -21,9 +27,9 @@ router.post(
   //     "Please enter a password with 6 or more characters"
   //   ).isLength({ min: 6 }),
   // ],
-  async (req, res) => {
-    await createUser;
-  }
+  
+     createUser
+  
 );
 
 // Get all Users

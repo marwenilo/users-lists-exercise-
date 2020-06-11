@@ -5,6 +5,49 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 
 // *************
+//Login User
+userLogin = async (req, res) => {
+  // *********update the login date
+  const { name, family_name, password } = req.body;
+  const user = await User.findOne({ name, family_name });
+  if (!user) {
+    return res.status(404).json({
+      msg: `Username is not found `,
+    });
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (isMatch) {
+    // sign in the token
+    const user = {
+      id,
+      name,
+      family_name,
+      //   last_login_date,
+      created_at,
+      update_at,
+    };
+    const token = jwt.sign({
+      id,
+      name,
+      family_name,
+      last_login_date,
+    });
+    const userData = {
+      ...user,
+      token: `Bearer ${token}`,
+    };
+    return res.status(200).json({
+      ...userData,
+      msg: "Welcome User",
+    });
+  } else {
+    return res.status(403).json({
+      msg: `invalid password `,
+    });
+  }
+};
+
+// *************
 // create new user controler
 //from add new user
 createUser = async (req, res) => {
