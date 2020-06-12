@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {handlDelete } from "../../../Js/actions/usersAction";
+import { handlDelete } from "../../../Js/actions/usersAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import MaUTable from "@material-ui/core/Table";
 import PropTypes from "prop-types";
@@ -14,6 +14,9 @@ import TablePaginationActions from "./TablePaginationActions";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TableToolbar from "./TableToolbar";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+import EditIcon from "@material-ui/icons/Edit";
 import {
   useGlobalFilter,
   usePagination,
@@ -21,18 +24,28 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
     const defaultRef = React.useRef();
     const resolvedRef = ref || defaultRef;
-
+    const classes = useStyles();
     React.useEffect(() => {
       resolvedRef.current.indeterminate = indeterminate;
     }, [resolvedRef, indeterminate]);
 
     return (
       <>
+        <IconButton aria-label="edit" color="warining" >
+          <EditIcon />
+        </IconButton>
+
         <Checkbox ref={resolvedRef} {...rest} />
       </>
     );
@@ -104,7 +117,7 @@ const EnhancedTable = ({
   setData,
   updateMyData,
   skipPageReset,
-  handlDelete
+  handlDelete,
 }) => {
   const {
     getTableProps,
@@ -113,7 +126,6 @@ const EnhancedTable = ({
     page,
     gotoPage,
     setPageSize,
-    
 
     state: { pageIndex, pageSize, selectedRowIds, globalFilter },
   } = useTable(
@@ -153,6 +165,7 @@ const EnhancedTable = ({
           // to the render a checkbox
           Cell: ({ row }) => (
             <div>
+            <p>o</p>
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
             </div>
           ),
@@ -161,7 +174,7 @@ const EnhancedTable = ({
       ]);
     }
   );
-//   const [deleteUser,setDeleteUser] = useState([])
+  //   const [deleteUser,setDeleteUser] = useState([])
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
   };
@@ -169,30 +182,27 @@ const EnhancedTable = ({
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value));
   };
-//   const test = data.filter((el,key) => selectedRowIds!==key  )
-//   console.log(test,"test")
-  const removeByIndexs = (array, indexs) =>{
-const ind = indexs[0]
-    const test = array.filter((el,key) => ind===key  );
-    const getId = test.map(el=>el.id).toString()
+  //   const test = data.filter((el,key) => selectedRowIds!==key  )
+  //   console.log(test,"test")
+  const removeByIndexs = (array, indexs) => {
+    const ind = indexs[0];
+    const test = array.filter((el, key) => ind === key);
+    const getId = test.map((el) => el.id).toString();
     const id = parseInt(getId);
-      console.log(getId,'getId')
+    console.log(getId, "getId");
     // console.log(...secTest,"deleteId")
-    console.log(id,"deleteId")
-    handlDelete(id)
+    console.log(id, "deleteId");
+    handlDelete(id);
     // console.log(secTest,"secTest")
-   return array.filter((_, i) => !indexs.includes(i));
-  }
- 
+    return array.filter((_, i) => !indexs.includes(i));
+  };
 
   const deleteUserHandler = (event) => {
     const newData = removeByIndexs(
-        
       data,
-      Object.keys(selectedRowIds).map((x) => parseInt(x, 10)),
-      
+      Object.keys(selectedRowIds).map((x) => parseInt(x, 10))
     );
-    console.log(newData,"newDATA")
+    console.log(newData, "newDATA");
     setData(newData);
   };
 
@@ -285,5 +295,4 @@ EnhancedTable.propTypes = {
   skipPageReset: PropTypes.bool.isRequired,
 };
 
-
-export default connect(null, {handlDelete })(EnhancedTable);
+export default connect(null, { handlDelete })(EnhancedTable);
