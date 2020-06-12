@@ -3,6 +3,7 @@ const User = db.users;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const moment = require('moment')
 
 // *************
 // create new user controler
@@ -41,22 +42,35 @@ createUser = async (req, res) => {
 //Get All Users
 //after login
 //////////////////////***********done */
+const formatDate = (date) => date ? moment(date).format('YYYY-MM-DD h:mm a') : ''
+
 getUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
-
+    let users = await User.findAll();
+    users = users.map(({dataValues}) => {
+      return {
+        ...dataValues,
+        last_login_date: formatDate(dataValues.last_login_date),
+        createdAt: formatDate(dataValues.createdAt),
+        updatedAt: formatDate(dataValues.updatedAt)
+      };
+    });
     res.json(users);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send({err: err.message});
   }
 };
+
 // *************
 //Update User By Id
 //////////////////////***********done */
 updateUser = async (req, res) => {
+  console.log(req.body)
   try {
     const user = await User.findByPk(req.params.id);
+console.log(user,"user update by id")
+
 
     //Update
     await user.update(req.body);

@@ -3,10 +3,7 @@ import { connect } from "react-redux";
 import { getUsers,handlDelete } from "../../Js/actions/usersAction";
 import styled from 'styled-components'
 import { useTable, usePagination } from 'react-table'
-
-
-
-
+import UserModal from './UserModal';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -144,14 +141,10 @@ const E=(props) =>{
         
       
       }, []);
-    const filtredUser = user.filter(el =>  el.id == id)
+    const filtredUser = user.find(it =>  it.id == id)
     console.log(filtredUser,"de")
    
     console.log(props.match.params)
-
-
-
-
 
     const columns = useMemo(
         () => [
@@ -190,6 +183,11 @@ const E=(props) =>{
               accessor: 'id',
               Cell: ({value}) => (<button onClick={()=>handlDelete(id)}>Delete</button>)
       })
+      sub_columns.push({
+        id: 'deletes',
+        accessor: 'id',
+        Cell: ({value}) => (<UserModal userInfo={filtredUser}/>)
+})
     
      
   return (
@@ -197,25 +195,16 @@ const E=(props) =>{
 
       <Table
         columns={sub_columns}
-        data={filtredUser}
+        data={filtredUser ? [filtredUser] : []}
         
       />
     </Styles>
   )
-
-
-
-
-
-
-
-
-
-
 }
 const mapStateToProps = (state) => ({
     user: state.usersReducer.user,
   });
+
 export default connect(mapStateToProps, { getUsers,handlDelete })(
     E
-  )
+)

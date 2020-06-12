@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 import { useTable, usePagination } from 'react-table'
 import { getUsers } from "../../Js/actions/usersAction";
-
+import UserModal from "./UserModal"
 // import makeData from './makeData'
 import axios from "axios";
 
@@ -192,6 +192,7 @@ function Table({
 // const serverData = makeData(10000)
 
 function Test() {
+    
     const columns = useMemo(
         () => [
           {
@@ -231,7 +232,7 @@ function Test() {
       })
     
       sub_columns.push({
-        id: 'button',
+        id: 'buttons',
         accessor: 'id',
         Cell: ({value}) => (<button onClick={()=>console.log('clicked value', value)}>Edit</button>)
 })
@@ -273,7 +274,7 @@ function Test() {
 
   return (
     <Styles> 
-
+<UserModal/>
       <Table
         columns={sub_columns}
         data={data}

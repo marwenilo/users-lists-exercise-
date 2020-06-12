@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import AddUserDialog from "./AddUserDialog";
+import AddUserDialog from "../../test/UserModal";
 import clsx from "clsx";
 import DeleteIcon from "@material-ui/icons/Delete";
 

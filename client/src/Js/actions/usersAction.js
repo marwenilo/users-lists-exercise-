@@ -24,16 +24,19 @@ import {
 // }
 // );
 
-export const handleEdit = ({ id }) => async (dispatch) => {
+export const handleEdit = ({ name,family_name,password,id }) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
-
-  const body = JSON.stringify({ id });
+  console.log(id,"id redux")
+// const newId= Number(id)
+  const body = JSON.stringify({ name,family_name,password });
+  console.log(body,"body")
   try {
-    const res = await axios.post(`/api/users/update/${id}`, body, config);
+    const res = await axios.put(`/api/users/update/${id}`, body, config);
+    console.log(res.data,"data redux")
     dispatch({
       type: EDIT_USERS,
       payload: res.data,
@@ -93,6 +96,7 @@ export const addNewUser = ({ name,family_name,password }) => async (dispatch) =>
       type: ADD_USERS,
       payload: res.data,
     });
+    dispatch(getUsers());
   } catch (err) {
     const errors = err.response.data.errors;
 
