@@ -1,5 +1,5 @@
 import React from "react";
-
+import { connect } from "react-redux";
 import AddUserDialog from "./AddUserDialog";
 import clsx from "clsx";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
-
+import {handlDelete } from "../../../Js/actions/usersAction";
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
@@ -72,4 +72,5 @@ TableToolbar.propTypes = {
   deleteUserHandler: PropTypes.func.isRequired,
 };
 
-export default TableToolbar;
+
+export default connect(null, {handlDelete })(TableToolbar);

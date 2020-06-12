@@ -108,14 +108,15 @@ export const addNewUser = ({ ...data }) => async (dispatch) => {
 
 export const handlDelete = (id) => async (dispatch) => {
   try {
-    await axios.delete(`/api/merch/delete/${id}`);
+    
+    await axios.delete(`/api/users/delete/${id}`);
 
     dispatch({
       type: DELETE_USERS,
       payload: id,
     });
 
-    dispatch(setAlert("Merch removed", "success"));
+    dispatch(setAlert("User removed", "success"));
   } catch (err) {
     dispatch({
       type: DELETE_USERS_FAIL,

@@ -5,7 +5,7 @@ import EnhancedTable from "./components/EnhancedTable";
 
 import axios from "axios";
 
-import { getUsers, handlDelete } from "../../Js/actions/usersAction";
+import { getUsers } from "../../Js/actions/usersAction";
 const TabContainer = ({ getUsers, user }) => {
   const columns = useMemo(
     () => [
@@ -103,6 +103,6 @@ const TabContainer = ({ getUsers, user }) => {
 const mapStateToProps = (state) => ({
   user: state.usersReducer.user,
 });
-export default connect(mapStateToProps, { getUsers, handlDelete })(
+export default connect(mapStateToProps, { getUsers })(
   TabContainer
 );
