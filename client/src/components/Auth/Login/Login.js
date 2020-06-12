@@ -71,7 +71,7 @@ const Login = ({ login, isAuthenticated }) => {
   
     if (isAuthenticated) {
       console.log(isAuthenticated)
-      return <Redirect to='/test' />;
+      return <Redirect to='/users-list' />;
     }
   
 
@@ -145,11 +145,7 @@ const Login = ({ login, isAuthenticated }) => {
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item>
-              <Link href="#" variant="body2" to='/register'>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
+            
           </Grid>
         </form>
       </div>

@@ -6,6 +6,7 @@ import Register from "../components/Auth/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import Test from "../components/test";
 import Alert from "../components/Alert/Alert";
+import UsersList from "../components/Users/UsersList"
 // import App from "../App.js"
 
 const AppRouter = () => (
@@ -14,7 +15,8 @@ const AppRouter = () => (
     <Alert />
     <Switch>
       {/* <PrivateRoute path="/test" exact component={Test} /> */}
-      <Route path="/login" exact component={Login} />
+      <Route path="/" exact component={Login} />
+      <PrivateRoute path="/users-list" exact component={UsersList} />
       {/* <Route path="/registration" exact component={Register} /> */}
     </Switch>
   </Router>
