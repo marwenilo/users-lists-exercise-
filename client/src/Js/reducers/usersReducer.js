@@ -15,7 +15,7 @@ const userReducer = (state = InitialState, { type, payload, id }) => {
     case GET_USER:
       return {
         ...state,
-        user: [...payload],
+        user: payload,
       };
     case ADD_USERS:
       return {

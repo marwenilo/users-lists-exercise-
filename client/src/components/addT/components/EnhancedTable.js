@@ -1,5 +1,6 @@
 import React from "react";
-
+import { connect } from "react-redux";
+import {handlDelete } from "../../../Js/actions/usersAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import MaUTable from "@material-ui/core/Table";
 import PropTypes from "prop-types";
@@ -103,6 +104,7 @@ const EnhancedTable = ({
   setData,
   updateMyData,
   skipPageReset,
+  handlDelete
 }) => {
   const {
     getTableProps,
@@ -111,6 +113,7 @@ const EnhancedTable = ({
     page,
     gotoPage,
     setPageSize,
+    
 
     state: { pageIndex, pageSize, selectedRowIds, globalFilter },
   } = useTable(
@@ -158,7 +161,7 @@ const EnhancedTable = ({
       ]);
     }
   );
-
+//   const [deleteUser,setDeleteUser] = useState([])
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
   };
@@ -166,15 +169,30 @@ const EnhancedTable = ({
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value));
   };
-
-  const removeByIndexs = (array, indexs) =>
-    array.filter((_, i) => !indexs.includes(i));
+//   const test = data.filter((el,key) => selectedRowIds!==key  )
+//   console.log(test,"test")
+  const removeByIndexs = (array, indexs) =>{
+const ind = indexs[0]
+    const test = array.filter((el,key) => ind===key  );
+    const getId = test.map(el=>el.id).toString()
+    const id = parseInt(getId);
+      console.log(getId,'getId')
+    // console.log(...secTest,"deleteId")
+    console.log(id,"deleteId")
+    handlDelete(id)
+    // console.log(secTest,"secTest")
+   return array.filter((_, i) => !indexs.includes(i));
+  }
+ 
 
   const deleteUserHandler = (event) => {
     const newData = removeByIndexs(
+        
       data,
-      Object.keys(selectedRowIds).map((x) => parseInt(x, 10))
+      Object.keys(selectedRowIds).map((x) => parseInt(x, 10)),
+      
     );
+    console.log(newData,"newDATA")
     setData(newData);
   };
 
@@ -267,4 +285,5 @@ EnhancedTable.propTypes = {
   skipPageReset: PropTypes.bool.isRequired,
 };
 
-export default EnhancedTable;
+
+export default connect(null, {handlDelete })(EnhancedTable);
