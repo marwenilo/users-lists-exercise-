@@ -59,7 +59,7 @@ export const handleEdit = ({ id }) => async (dispatch) => {
 export const getUsers = () => async (dispatch) => {
   try {
     const res = await axios.get("/api/users/users");
-
+console.log(res.data,'redux')
     dispatch({
       type: GET_USER,
       payload: res.data,
