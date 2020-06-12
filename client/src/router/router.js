@@ -6,7 +6,7 @@ import Register from "../components/Auth/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import Test from "../components/test";
 import Alert from "../components/Alert/Alert";
-import UsersList from "../components/Users/UsersList"
+import UsersList from "../components/Users/UsersList";
 // import App from "../App.js"
 
 const AppRouter = () => (
