@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { connect } from "react-redux";
+import {addNewUser } from "../../../Js/actions/usersAction";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -9,36 +10,27 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import PropTypes from "prop-types";
-import Switch from "@material-ui/core/Switch";
+
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 
 const initialUser = {
-  firstName: "",
-  lastName: "",
-  age: 0,
-  visits: 0,
-  status: "single",
-  progress: 0,
-  subRows: undefined,
+  name: "",
+  family_name: "",
+  password: "",
+  
 };
 
 const AddUserDialog = (props) => {
   const [user, setUser] = useState(initialUser);
-  const { addUserHandler } = props;
+  const { addUserHandler,addNewUser } = props;
   const [open, setOpen] = React.useState(false);
 
-  const [switchState, setSwitchState] = React.useState({
-    addMultiple: false,
-  });
 
-  const handleSwitchChange = (name) => (event) => {
-    setSwitchState({ ...switchState, [name]: event.target.checked });
-  };
+console.log(user,'user')
 
-  const resetSwitch = () => {
-    setSwitchState({ addMultiple: false });
-  };
+
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,13 +38,14 @@ const AddUserDialog = (props) => {
 
   const handleClose = () => {
     setOpen(false);
-    resetSwitch();
+    
   };
 
   const handleAdd = (event) => {
+    addNewUser(user)  
     addUserHandler(user);
     setUser(initialUser);
-    switchState.addMultiple ? setOpen(true) : setOpen(false);
+    
   };
 
   const handleChange = (name) => ({ target: { value } }) => {
@@ -80,59 +73,29 @@ const AddUserDialog = (props) => {
             label="First Name"
             type="text"
             fullWidth
-            value={user.firstName}
-            onChange={handleChange("firstName")}
+            value={user.name}
+            onChange={handleChange("name")}
           />
           <TextField
             margin="dense"
             label="Last Name"
             type="text"
             fullWidth
-            value={user.lastName}
-            onChange={handleChange("lastName")}
+            value={user.family_name}
+            onChange={handleChange("family_name")}
           />
           <TextField
             margin="dense"
-            label="Age"
-            type="number"
+            label="Password"
+            type="password"
             fullWidth
-            value={user.age}
-            onChange={handleChange("age")}
+            value={user.password}
+            onChange={handleChange("password")}
           />
-          <TextField
-            margin="dense"
-            label="Visits"
-            type="number"
-            fullWidth
-            value={user.visits}
-            onChange={handleChange("visits")}
-          />
-          <TextField
-            margin="dense"
-            label="Status"
-            type="text"
-            fullWidth
-            value={user.status}
-            onChange={handleChange("status")}
-          />
-          <TextField
-            margin="dense"
-            label="Profile Progress"
-            type="number"
-            fullWidth
-            value={user.progress}
-            onChange={handleChange("progress")}
-          />
+         
         </DialogContent>
         <DialogActions>
-          <Tooltip title="Add multiple">
-            <Switch
-              checked={switchState.addMultiple}
-              onChange={handleSwitchChange("addMultiple")}
-              value="addMultiple"
-              inputProps={{ "aria-label": "secondary checkbox" }}
-            />
-          </Tooltip>
+         
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
@@ -149,4 +112,5 @@ AddUserDialog.propTypes = {
   addUserHandler: PropTypes.func.isRequired,
 };
 
-export default AddUserDialog;
+
+export default connect(null, {addNewUser })(AddUserDialog);

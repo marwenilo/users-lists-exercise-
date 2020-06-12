@@ -77,14 +77,14 @@ console.log(res.data,'redux')
   }
 };
 
-export const addNewUser = ({ ...data }) => async (dispatch) => {
+export const addNewUser = ({ name,family_name,password }) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ ...data });
+  const body = JSON.stringify({ name,family_name,password });
 
   try {
     const res = await axios.post("/api/users/add-user", body, config);
