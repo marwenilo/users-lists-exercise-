@@ -54,18 +54,19 @@ const useStyles = makeStyles((theme) => ({
 const Login = ({ login, isAuthenticated }) => {
     const classes = useStyles();
     const [formData, setFormData] = useState({
-      email: '',
+      name: '',
+      family_name: '',
       password: ''
     });
   
-    const { email, password } = formData;
+    const { name,family_name, password } = formData;
   
     const onChange = e =>
       setFormData({ ...formData, [e.target.name]: e.target.value });
   
     const onSubmit = async e => {
       e.preventDefault();
-      login(email, password);
+      login(name,family_name, password);
     };
   
     if (isAuthenticated) {
@@ -90,11 +91,24 @@ const Login = ({ login, isAuthenticated }) => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
+            // id="email"
+            label="Name"
+            name="name"
             autoComplete="email"
-            value={email}
+            value={name}
+              onChange={e => onChange(e)}
+            autoFocus
+          />
+                 <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            // id="email"
+            label="Your Family Name"
+            name="family_name"
+            autoComplete="email"
+            value={family_name}
               onChange={e => onChange(e)}
             autoFocus
           />
