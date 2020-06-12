@@ -13,9 +13,9 @@ const AppRouter = () => (
     <Navigation />
     <Alert />
     <Switch>
-      <PrivateRoute path="/test" exact component={Test} />
+      {/* <PrivateRoute path="/test" exact component={Test} /> */}
       <Route path="/login" exact component={Login} />
-      <Route path="/registration" exact component={Register} />
+      {/* <Route path="/registration" exact component={Register} /> */}
     </Switch>
   </Router>
 );

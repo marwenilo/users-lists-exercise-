@@ -13,7 +13,7 @@ const {
 
 //Login User
 // access  Public
-router.post("/login", userLogin);
+// router.post("/login", userLogin);
 
 // Create a new Customer
 // access  Privet
@@ -34,7 +34,7 @@ router.post(
 
 // Get all Users
 // access  Privet
-router.get("/users",auth, getUsers);
+router.get("/users", getUsers);
 
 // Update User By Id
 // access  Privet
