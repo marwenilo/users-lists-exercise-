@@ -50,7 +50,6 @@ function Table({ columns, data, pageCount: controlledPageCount }) {
     prepareRow,
     page,
 
-    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,

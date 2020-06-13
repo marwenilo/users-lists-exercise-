@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
 
 const UserModal = (props) => {
-  console.log(props.userInfo, "user info");
   const initialUser = {
     name: props.userInfo ? props.userInfo.name : "",
     family_name: props.userInfo ? props.userInfo.family_name : "",
@@ -27,8 +26,8 @@ const UserModal = (props) => {
   }
 
   const [user, setUser] = useState(initialUser);
-  const { addNewUser, handleEdit, test } = props;
-  const [open, setOpen] = React.useState(false);
+  const { addNewUser, handleEdit } = props;
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,12 +40,10 @@ const UserModal = (props) => {
   const handleAdd = (event) => {
     const { name, family_name, password, id } = user;
 
-    console.log(user.name, "name user modal");
     props.userInfo
       ? handleEdit({ name, family_name, password, id })
       : addNewUser({ name, family_name, password });
 
-   
     setUser(initialUser);
     setOpen(false);
   };

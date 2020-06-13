@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import { getUsers, handlDelete } from "../../Js/actions/usersAction";
 import styled from "styled-components";
@@ -48,8 +48,6 @@ function Table({ columns, data, pageCount: controlledPageCount }) {
     headerGroups,
     prepareRow,
     page,
-
-    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
@@ -96,7 +94,7 @@ function Table({ columns, data, pageCount: controlledPageCount }) {
 const User = (props) => {
   const { user, handlDelete } = props;
   const id = props.match.params.id;
-  const filtredUser = user.find((it) => it.id == id);
+  const filtredUser = user.find((el) => el.id === Number(id));
   const columns = useMemo(
     () => [
       {

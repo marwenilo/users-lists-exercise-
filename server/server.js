@@ -1,13 +1,17 @@
 const express = require("express");
-const connectDB = require('./config/db.config');
+const connectDB = require("./config/db.config");
 const usersRoute = require("./routes/api/users");
 const authRoute = require("./routes/api/auth");
+const cors = require("cors");
 const app = express();
+
+//Enable All CORS Requests
+app.use(cors());
 
 // connect DB
 // force: true will drop the table if it already exists
-connectDB.sequelize.sync({force: false}).then(() => {
-  console.log('Will not drop and Resync with { force: false }');
+connectDB.sequelize.sync({ force: false }).then(() => {
+  console.log("Will not drop and Resync with { force: false }");
 });
 
 //Init Middleware

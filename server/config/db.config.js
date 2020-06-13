@@ -1,6 +1,6 @@
-const env = require('./env.js');
+const env = require("./env.js");
 
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const sequelize = new Sequelize(env.database, env.username, env.password, {
   host: env.host,
   dialect: env.dialect,
@@ -10,8 +10,8 @@ const sequelize = new Sequelize(env.database, env.username, env.password, {
     max: env.max,
     min: env.pool.min,
     acquire: env.pool.acquire,
-    idle: env.pool.idle
-  }
+    idle: env.pool.idle,
+  },
 });
 
 const db = {};
@@ -20,7 +20,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 //Models/tables
-db.users = require('../model/users.js')(sequelize, Sequelize);
-
+db.users = require("../model/users.js")(sequelize, Sequelize);
 
 module.exports = db;
