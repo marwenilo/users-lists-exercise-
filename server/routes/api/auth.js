@@ -15,6 +15,7 @@ const User = db.users;
 router.get("/", auth, async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
+    console.log(user,"user login back")
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -37,6 +38,7 @@ router.post("/", async (req, res) => {
         family_name,
       },
     });
+    console.log(user,"user login back2")
     // console.log(last_login_date,"login time")
     await user.update({last_login_date:loginTime});
     if (!user) {
@@ -52,7 +54,7 @@ router.post("/", async (req, res) => {
     //return jsonweb token to login rightaway after they reg to the site****
 
     const isMatch = await bcrypt.compare(password, user.password);
-
+console.log(user.password,"user password back")
     if (!isMatch) {
       return res.status(400).json({
         errors: [

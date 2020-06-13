@@ -3,7 +3,7 @@ const User = db.users;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const moment = require('moment')
+const moment = require("moment");
 
 // *************
 // create new user controler
@@ -42,23 +42,24 @@ createUser = async (req, res) => {
 //Get All Users
 //after login
 //////////////////////***********done */
-const formatDate = (date) => date ? moment(date).format('YYYY-MM-DD h:mm a') : ''
+const formatDate = (date) =>
+  date ? moment(date).format("YYYY-MM-DD h:mm a") : "";
 
 getUsers = async (req, res) => {
   try {
     let users = await User.findAll();
-    users = users.map(({dataValues}) => {
+    users = users.map(({ dataValues }) => {
       return {
         ...dataValues,
         last_login_date: formatDate(dataValues.last_login_date),
         createdAt: formatDate(dataValues.createdAt),
-        updatedAt: formatDate(dataValues.updatedAt)
+        updatedAt: formatDate(dataValues.updatedAt),
       };
     });
     res.json(users);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send({err: err.message});
+    res.status(500).send({ err: err.message });
   }
 };
 
@@ -66,11 +67,19 @@ getUsers = async (req, res) => {
 //Update User By Id
 //////////////////////***********done */
 updateUser = async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   try {
     const user = await User.findByPk(req.params.id);
-console.log(user,"user update by id")
+    let password = req.body.password;
+    const salt = await bcrypt.genSalt(10);
 
+    // password = await bcrypt.hash(password, salt);
+
+    req.body.password = await bcrypt.hash(password, salt);
+    console.log(password, "user pass after crypt");
+    // console.log(user,"user update by id")
+
+    // remember to check the kind of the id after the salt so i can user the right type between the front and the db
 
     //Update
     await user.update(req.body);
