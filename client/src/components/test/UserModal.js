@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import {addNewUser } from "../../../Js/actions/usersAction";
+import {addNewUser,handleEdit } from "../../Js/actions/usersAction";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -9,25 +9,29 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
-import PropTypes from "prop-types";
-
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 
-const initialUser = {
-  name: "",
-  family_name: "",
-  password: "",
-  
-};
 
-const AddUserDialog = (props) => {
+
+const UserModal = (props) => {
+  console.log(props.userInfo,'user info')
+  const initialUser = {
+    name: props.userInfo? props.userInfo.name: "",
+    family_name: props.userInfo? props.userInfo.family_name: "",
+    password: props.userInfo? props.userInfo.password: "",
+  };
+  
+  if (props.userInfo) {
+    initialUser['id'] = props.userInfo.id;
+  }
+  
   const [user, setUser] = useState(initialUser);
-  const { addUserHandler,addNewUser } = props;
+  const { addNewUser,handleEdit } = props;
   const [open, setOpen] = React.useState(false);
 
 
-console.log(user,'user')
+
 
 
 
@@ -42,8 +46,17 @@ console.log(user,'user')
   };
 
   const handleAdd = (event) => {
-    addNewUser(user)  
-    addUserHandler(user);
+    const { name,family_name,password,id} = user
+  
+    console.log(user.name,'name user modal')
+    props.userInfo?
+    handleEdit({name,family_name,password,id})
+
+    :
+    
+    addNewUser({ name,family_name,password})  
+
+    // addUserHandler(user);
     setUser(initialUser);
     
   };
@@ -71,6 +84,7 @@ console.log(user,'user')
             autoFocus
             margin="dense"
             label="First Name"
+            name='name'
             type="text"
             fullWidth
             value={user.name}
@@ -79,6 +93,7 @@ console.log(user,'user')
           <TextField
             margin="dense"
             label="Last Name"
+            name="family_name"
             type="text"
             fullWidth
             value={user.family_name}
@@ -88,6 +103,7 @@ console.log(user,'user')
             margin="dense"
             label="Password"
             type="password"
+            name="password"
             fullWidth
             value={user.password}
             onChange={handleChange("password")}
@@ -108,9 +124,7 @@ console.log(user,'user')
   );
 };
 
-AddUserDialog.propTypes = {
-  addUserHandler: PropTypes.func.isRequired,
-};
 
 
-export default connect(null, {addNewUser })(AddUserDialog);
+
+export default connect(null, {addNewUser,handleEdit })(UserModal);

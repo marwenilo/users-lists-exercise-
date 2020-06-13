@@ -59,13 +59,13 @@ const Login = ({ login, isAuthenticated }) => {
   });
 
   const { name, family_name, password } = formData;
-
+const loginTime = new Date();
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    login(name, family_name, password);
+    login(name, family_name, password,loginTime );
   };
 
   if (isAuthenticated) {

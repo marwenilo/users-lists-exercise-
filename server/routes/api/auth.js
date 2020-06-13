@@ -26,16 +26,19 @@ router.get("/", auth, async (req, res) => {
 //Login User
 //////////////////////***********done */
 router.post("/", async (req, res) => {
-  const { name, family_name, password } = req.body;
+  const { name, family_name, password,loginTime } = req.body;
+  const last_login_date=loginTime
   try {
     // if the user exists****
 
     let user = await User.findOne({
       where: {
+        name,
         family_name,
       },
     });
-
+    // console.log(last_login_date,"login time")
+    await user.update({last_login_date:loginTime});
     if (!user) {
       return res.status(400).json({
         errors: [

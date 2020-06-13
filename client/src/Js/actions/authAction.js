@@ -33,14 +33,14 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Login User
-export const login = (name, family_name, password) => async (dispatch) => {
+export const login = (name, family_name, password,loginTime) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ name, family_name, password });
+  const body = JSON.stringify({ name, family_name, password,loginTime });
   console.log(body, "redux");
   try {
     const res = await axios.post("/api/auth", body, config);
