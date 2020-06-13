@@ -1,8 +1,7 @@
 const db = require("../config/db.config.js");
 const User = db.users;
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const config = require("config");
+
 const moment = require("moment");
 
 // *************
@@ -10,13 +9,6 @@ const moment = require("moment");
 //from add new user
 //////////////////////***********done */
 createUser = async (req, res) => {
-  // const user = await User.findOne({ family_name });
-  // console.log(user.dataValues.password,"login user")
-  // if (!user.dataValues) {
-  //   return res.status(404).json({
-  //     msg: `User is not found `,
-  //   });
-  // }
   const { name, family_name, password } = req.body;
   try {
     // Save to MySQL database
@@ -25,12 +17,12 @@ createUser = async (req, res) => {
       family_name,
       password,
     });
-    //Crypt password
+
     const salt = await bcrypt.genSalt(10);
-    // remember to check the kind of the id after the salt so i can user the right type between the front and the db
+
     user.password = await bcrypt.hash(password, salt);
     await user.save();
-    console.log(user, "create user");
+
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -67,21 +59,13 @@ getUsers = async (req, res) => {
 //Update User By Id
 //////////////////////***********done */
 updateUser = async (req, res) => {
-  console.log(req.body);
   try {
     const user = await User.findByPk(req.params.id);
     let password = req.body.password;
     const salt = await bcrypt.genSalt(10);
 
-    // password = await bcrypt.hash(password, salt);
-
     req.body.password = await bcrypt.hash(password, salt);
-    console.log(password, "user pass after crypt");
-    // console.log(user,"user update by id")
 
-    // remember to check the kind of the id after the salt so i can user the right type between the front and the db
-
-    //Update
     await user.update(req.body);
 
     return res.json(user);
@@ -104,7 +88,6 @@ deleteUser = async (req, res) => {
   } catch (err) {
     console.error(err.message);
 
-    //CHECK FOR THE TYPE OF THE PASSWORD CHECK THE SALT OF THE PASSWORD AND THE DB TYPE "INT"
     if (err.kind === "NUMBER") {
       return res.status(404).json({ msg: "User not found" });
     }

@@ -71,7 +71,7 @@ const loginTime = new Date();
   };
 
   if (isAuthenticated) {
-    console.log(isAuthenticated);
+  
     return <Redirect to="/users-list" />;
   }
 
