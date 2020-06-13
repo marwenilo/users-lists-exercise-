@@ -9,34 +9,22 @@ import {
   GET_USER,
   GET_USER_FAIL,
   DELETE_USERS_FAIL,
-  // LOGOUT,
-  //   CLEAR_PROFILE
 } from "../Constants/actionsTypes";
 
-// export const addNewMerch = payload=> ({
-
-//   type: ADD_MERCHANDISE,
-//   payload:{
-//   ...payload,
-//   id:uuidv4()
-//   }
-
-// }
-// );
-
-export const handleEdit = ({ name,family_name,password,id }) => async (dispatch) => {
+export const handleEdit = ({ name, family_name, password, id }) => async (
+  dispatch
+) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
-  console.log(id,"id redux")
-// const newId= Number(id)
-  const body = JSON.stringify({ name,family_name,password });
-  console.log(body,"body")
+
+  const body = JSON.stringify({ name, family_name, password });
+
   try {
     const res = await axios.put(`/api/users/update/${id}`, body, config);
-    console.log(res.data,"data redux")
+
     dispatch({
       type: EDIT_USERS,
       payload: res.data,
@@ -54,15 +42,10 @@ export const handleEdit = ({ name,family_name,password,id }) => async (dispatch)
   }
 };
 
-// export const handlDelete = id => ({
-//   type: DELETE_USERS,
-//   id
-// });
-
 export const getUsers = () => async (dispatch) => {
   try {
     const res = await axios.get("/api/users/users");
-console.log(res.data,'redux')
+
     dispatch({
       type: GET_USER,
       payload: res.data,
@@ -80,14 +63,16 @@ console.log(res.data,'redux')
   }
 };
 
-export const addNewUser = ({ name,family_name,password }) => async (dispatch) => {
+export const addNewUser = ({ name, family_name, password }) => async (
+  dispatch
+) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ name,family_name,password });
+  const body = JSON.stringify({ name, family_name, password });
 
   try {
     const res = await axios.post("/api/users/add-user", body, config);
@@ -112,14 +97,13 @@ export const addNewUser = ({ name,family_name,password }) => async (dispatch) =>
 
 export const handlDelete = (id) => async (dispatch) => {
   try {
-    
     await axios.delete(`/api/users/delete/${id}`);
 
     dispatch({
       type: DELETE_USERS,
       payload: id,
     });
-
+    dispatch(getUsers());
     dispatch(setAlert("User removed", "success"));
   } catch (err) {
     dispatch({

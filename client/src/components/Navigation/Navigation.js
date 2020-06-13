@@ -23,21 +23,8 @@ class Navigation extends Component {
           <Toolbar>
             <div className={styles.flexGrow}>
               <Link className={linkStyle} to="/">
-                Home
+                Login
               </Link>
-
-              <font>
-                <Link className={linkStyle} to="/login">
-                  Login
-                </Link>
-                <Link className={linkStyle} to="/test">
-                  test
-                </Link>
-
-                <Link className={linkStyle} to="/registration">
-                  Registration
-                </Link>
-              </font>
             </div>
             <IconButton className={styles.theme} onClick={this.switchTheme}>
               <i className="material-icons">invert_colors</i>
@@ -51,7 +38,7 @@ class Navigation extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    theme: state.rootReducer.theme,
+    theme: state.themeReducer.theme,
   };
 };
 

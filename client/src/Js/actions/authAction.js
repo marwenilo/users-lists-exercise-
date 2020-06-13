@@ -7,8 +7,6 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  // LOGOUT,
-  //   CLEAR_PROFILE
 } from "../Constants/actionsTypes";
 import setAuthToken from "../../utils/setAuthToken";
 
@@ -33,18 +31,20 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Login User
-export const login = (name, family_name, password,loginTime) => async (dispatch) => {
+export const login = (name, family_name, password, loginTime) => async (
+  dispatch
+) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ name, family_name, password,loginTime });
-  console.log(body, "redux");
+  const body = JSON.stringify({ name, family_name, password, loginTime });
+
   try {
     const res = await axios.post("/api/auth", body, config);
-    console.log(res);
+
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
@@ -95,9 +95,3 @@ export const register = ({ firstName, lastName, email, password }) => async (
     });
   }
 };
-
-// Logout / Clear Profile
-// export const logout = () => dispatch => {
-//   dispatch({ type: CLEAR_PROFILE });
-//   dispatch({ type: LOGOUT });
-// };
