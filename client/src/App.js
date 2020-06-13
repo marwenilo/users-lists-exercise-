@@ -19,7 +19,7 @@ function App({ theme }) {
 
 const mapStateToProps = (state) => {
   return {
-    theme: state.rootReducer.theme,
+    theme: state.themeReducer.theme,
   };
 };
 

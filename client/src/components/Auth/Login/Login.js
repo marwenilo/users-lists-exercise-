@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../../Js/actions/authAction";
+import { getUsers } from "../../../Js/actions/usersAction";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ login, isAuthenticated }) => {
+const Login = ({ login, isAuthenticated,getUsers }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     name: "",
@@ -66,6 +67,7 @@ const loginTime = new Date();
   const onSubmit = async (e) => {
     e.preventDefault();
     login(name, family_name, password,loginTime );
+    getUsers()
   };
 
   if (isAuthenticated) {
@@ -160,4 +162,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.authReducer.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login,getUsers })(Login);
