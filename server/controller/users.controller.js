@@ -11,8 +11,21 @@ const moment = require("moment");
 createUser = async (req, res) => {
   const { name, family_name, password } = req.body;
   try {
+    // Check if user exist
+    let userExist = await User.findOne({
+      where: {
+        name,
+        family_name,
+      },
+    });
+    if (userExist) {
+      return res.status(400).json({
+        message: `user is already Exist!`,
+       
+      })
+    }
     // Save to MySQL database
-    user = new User({
+    let user = new User({
       name,
       family_name,
       password,
